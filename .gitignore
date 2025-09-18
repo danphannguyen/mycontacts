@@ -1,0 +1,17 @@
+# --- Node.js ---
+node_modules/
+npm-debug.log*
+
+# --- Env ---
+.env
+
+# --- Logs ---
+logs/              
+*.log               
+
+# --- Git ---
+.git/
+
+# --- IDE / OS ---
+.DS_Store
+.vscode/
