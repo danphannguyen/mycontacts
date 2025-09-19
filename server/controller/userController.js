@@ -4,11 +4,9 @@ const { ValidationError, ConflictError, AppError } = require("../utils/errors");
 const userController = {
 	register: async (req, res, next) => {
 		try {
-			// Validation (lance ValidationError si échec)
-			userService.validateUserData(req.body);
+			userService.validateUserData(req.body);   			// Validation (lance ValidationError si échec)
 
-			// Création (lance ConflictError si email existe)
-			const user = await userService.createUser(req.body);
+			const user = await userService.createUser(req.body);    // Création (lance ConflictError si email existe)
 
 			res.status(201).json({
 				success: true,

@@ -40,6 +40,26 @@ class AuthError extends AppError {
 }
 
 /**
+ * Token JWT expiré (401) - Sous-classe d'AuthError
+ */
+class TokenExpiredError extends AuthError {
+  constructor(message = 'Token expiré') {
+    super(message);
+    this.name = 'TokenExpiredError';
+  }
+}
+
+/**
+ * Token JWT invalide (401) - Sous-classe d'AuthError
+ */
+class InvalidTokenError extends AuthError {
+  constructor(message = 'Token invalide') {
+    super(message);
+    this.name = 'InvalidTokenError';
+  }
+}
+
+/**
  * Ressource non trouvée (404)
  */
 class NotFoundError extends AppError {
@@ -54,5 +74,7 @@ module.exports = {
     ValidationError,
     ConflictError,
     AuthError,
+    TokenExpiredError,
+    InvalidTokenError,
     NotFoundError
 };
