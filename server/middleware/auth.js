@@ -24,7 +24,7 @@ const authenticate = async (req, res, next) => {
 			});
 		}
 
-		req.body.user = {
+		req.user = {
 			id: decoded.userId,
 			email: decoded.email,
 		};

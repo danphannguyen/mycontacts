@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(authenticate);
 
 router.put('/', contactController.addContact);
+router.get('/', contactController.retrieveContact);
 
 module.exports = router;
