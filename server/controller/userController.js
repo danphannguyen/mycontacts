@@ -23,10 +23,13 @@ const userController = {
   login: async (req, res, next) => {
     try {
       const user = await userService.authenticateUser(req.body);
+
+      const token = await userService.generateJwtToken(user)
       
       res.status(200).json({
 				success: true,
 				message: "Utilisateur authentifié avec succès",
+        jwtToken: token,
 				data: { user },
 			});
     } catch (error) {

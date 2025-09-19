@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./docs/swagger.json");
 
 const connectDB = require('./config/database');
 const routes = require('./routes');
@@ -14,6 +16,9 @@ app.use(express.json());
 
 // Routes
 app.use('/api', routes);
+
+// Swagger 
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware d'erreur
 app.use(errorHandler)

@@ -15,7 +15,7 @@ const userService = {
             allErrors = allErrors.concat(emailValidation.errors);
         }
 
-        const passwordValidation = validators.validatePassword(password, { minLength: 6, requireStrong: true });
+        const passwordValidation = validators.validatePassword(password, { minLength: 6, maxLength: 20, requireStrong: true });
         if (!passwordValidation.isValid) {
             allErrors = allErrors.concat(passwordValidation.errors);
         }
@@ -49,10 +49,9 @@ const userService = {
 
         const savedUser = await newUser.save();
 
-        const userResponse = savedUser.toObject();
-        delete userResponse.password;
+        const { password: existingPassword, __v, updatedAt, ...userResponse } = savedUser.toObject();
 
-        return userResponse;
+      return userResponse;
     },
 
     authenticateUser: async (userData) => {
@@ -63,7 +62,7 @@ const userService = {
       });
 
       if (!existingUser) {
-          throw new NotFoundError('Un utilisateur avec cet email existe déjà');
+          throw new NotFoundError(`Aucun utilisateur n'est rattaché à cet email`);
       }
 
       const isMatch = await bcrypt.compare(password, existingUser.password);
@@ -72,19 +71,20 @@ const userService = {
         throw new AuthError('Identifiants incorrects. Veuillez réessayer');
       }
 
+      const { password: existingPassword, __v, updatedAt, ...userResponse } = existingUser.toObject();
+
+      return userResponse;
+    },
+
+    generateJwtToken: async(userData) => {
       const payload = {
-        userId: existingUser._id,
-        email: existingUser.email
+        userId: userData._id,
+        email: userData.email
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
 
-      const userResponse= {
-        email: existingUser.email,
-        jwtToken: token
-      }
-
-      return userResponse;
+      return token
     }
 };
 

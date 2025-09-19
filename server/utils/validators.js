@@ -21,7 +21,7 @@ const validators = {
     },
 
     validatePassword: (password, options = {}) => {
-        const { minLength = 6, requireStrong = false } = options;
+        const { minLength = 6, maxLength = 20, requireStrong = false } = options;
         const errors = [];
         
         if (!password || typeof password !== 'string') {
@@ -30,6 +30,11 @@ const validators = {
             // Vérification de la longueur minimale
             if (password.length < minLength) {
                 errors.push(`Le mot de passe doit contenir au moins ${minLength} caractères`);
+            }
+
+            // Vérification de la longueur maximale
+            if (password.length > maxLength) {
+                errors.push(`Le mot de passe ne doit pas contenir plus de ${maxLength} caractères`);
             }
             
             // Vérification des exigences de force si demandé
