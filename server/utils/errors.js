@@ -60,6 +60,16 @@ class InvalidTokenError extends AuthError {
 }
 
 /**
+ * Erreur d'autorisation (403)
+ */
+class ForbiddenError extends AppError {
+  constructor(message = "Accès interdit") {
+    super(message, 403);
+    this.name = "ForbiddenError";
+  }
+}
+
+/**
  * Ressource non trouvée (404)
  */
 class NotFoundError extends AppError {
@@ -76,5 +86,6 @@ module.exports = {
     AuthError,
     TokenExpiredError,
     InvalidTokenError,
-    NotFoundError
+    NotFoundError,
+    ForbiddenError
 };

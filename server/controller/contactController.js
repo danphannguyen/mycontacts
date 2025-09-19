@@ -30,6 +30,23 @@ const contactController = {
 			next(error);
 		}
 	},
+
+  modifyContact: async (req, res, next) => {
+    try {
+      contactService.validateContactData(req.body);
+
+      const updateContact = await contactService.updateContact(req.body, req.user, req.params);
+
+      res.status(200).json({
+				success: true,
+				message: "Liste des contacts récupérée avec succès",
+				data: updateContact,
+			});
+      
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 
 module.exports = contactController;

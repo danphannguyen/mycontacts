@@ -67,10 +67,18 @@ const validators = {
 	},
 
 	validateName: (name, options = {}) => {
-		const { minLength = 2, maxLength = 30, type = "prénom" } = options;
+		const {
+			minLength = 2,
+			maxLength = 30,
+			type = "prénom",
+			required = "true",
+		} = options;
 		const errors = [];
 
-		if (!name || typeof name !== "string" || name.trim().length === 0) {
+		if (
+			(!name || typeof name !== "string" || name.trim().length === 0) &&
+			required
+		) {
 			errors.push(`Le ${type} est requis`);
 		} else {
 			const trimmedName = name.trim();
@@ -120,9 +128,17 @@ const validators = {
 					`Le numéro de téléphone ne doit pas contenir plus de ${maxLength} caractères`
 				);
 			}
+
+      // Vérification du format (seulement chiffres, espaces, +, -, (, ))
+      const phoneRegex = /^[0-9+\-\s()]+$/;
+			if (!phoneRegex.test(phone.trim())) {
+				errors.push(
+					"Le numéro de téléphone ne peut contenir que des chiffres, espaces, +, -, ( et )"
+				);
+			}
 		}
 
-    return {
+		return {
 			isValid: errors.length === 0,
 			errors,
 		};
