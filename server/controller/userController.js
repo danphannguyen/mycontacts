@@ -19,6 +19,20 @@ const userController = {
 			next(error);
 		}
 	},
+
+  login: async (req, res, next) => {
+    try {
+      const user = await userService.authenticateUser(req.body);
+      
+      res.status(200).json({
+				success: true,
+				message: "Utilisateur authentifié avec succès",
+				data: { user },
+			});
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 
 module.exports = userController;

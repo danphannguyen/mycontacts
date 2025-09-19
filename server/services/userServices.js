@@ -1,7 +1,9 @@
+require('dotenv').config();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const { ValidationError, ConflictError } = require('../utils/errors');
+const { ValidationError, ConflictError, NotFoundError, AuthError } = require('../utils/errors');
 const validators = require('../utils/validators');
+const jwt =  require('jsonwebtoken');
 
 const userService = {
     validateUserData: (userData) => {
@@ -36,25 +38,53 @@ const userService = {
             throw new ConflictError('Un utilisateur avec cet email existe déjà');
         }
 
-        // Hasher le mot de passe
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Créer l'utilisateur
         const newUser = new User({
             email: email.toLowerCase().trim(),
             password: hashedPassword,
             createdAt: new Date()
         });
 
-        // Sauvegarder en base
         const savedUser = await newUser.save();
 
-        // Retourner l'utilisateur sans le mot de passe
         const userResponse = savedUser.toObject();
         delete userResponse.password;
 
         return userResponse;
+    },
+
+    authenticateUser: async (userData) => {
+      const { email, password } = userData;
+
+      const existingUser = await User.findOne({ 
+          email: email.toLowerCase().trim() 
+      });
+
+      if (!existingUser) {
+          throw new NotFoundError('Un utilisateur avec cet email existe déjà');
+      }
+
+      const isMatch = await bcrypt.compare(password, existingUser.password);
+
+      if (!isMatch) {
+        throw new AuthError('Identifiants incorrects. Veuillez réessayer');
+      }
+
+      const payload = {
+        userId: existingUser._id,
+        email: existingUser.email
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
+
+      const userResponse= {
+        email: existingUser.email,
+        jwtToken: token
+      }
+
+      return userResponse;
     }
 };
 
