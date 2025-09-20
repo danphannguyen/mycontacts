@@ -5,6 +5,54 @@
 		"version": "1.0.0",
 		"description": "Documentation Swagger avec JSON"
 	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"Contact": {
+				"type": "object",
+				"properties": {
+					"_id": {
+						"type": "string",
+						"example": "68cd1188c8b184"
+					},
+					"firstname": {
+						"type": "string",
+						"example": "Jean",
+						"minLength": 2,
+						"maxLength": 30
+					},
+					"lastname": {
+						"type": "string",
+						"example": "Dupont",
+						"minLength": 2,
+						"maxLength": 30
+					},
+					"phone": {
+						"type": "string",
+						"example": "01 23 45 67 89",
+						"minLength": 10,
+						"maxLength": 20,
+						"pattern": "^[0-9+\\-\\s()]+$"
+					},
+					"userId": {
+						"type": "string",
+						"example": "68cd1188c8b184"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time",
+						"example": "2025-09-19T08:17:12.209Z"
+					}
+				}
+			}
+		}
+	},
 	"paths": {
 		"/auth/register": {
 			"put": {
@@ -142,6 +190,234 @@
 					},
 					"404": {
 						"description": "Aucun utilisateur n'est rattaché à cet email"
+					}
+				}
+			}
+		},
+		"/contacts": {
+			"post": {
+				"tags": ["Contacts"],
+				"summary": "Créer un nouveau contact",
+				"security": [{ "bearerAuth": [] }],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"firstname": {
+										"type": "string",
+										"example": "Jean",
+										"minLength": 2,
+										"maxLength": 30,
+										"pattern": "^[a-zA-ZÀ-ÿ\\s\\-']+$",
+										"description": "Prénom du contact (lettres, espaces, tirets et apostrophes uniquement)"
+									},
+									"lastname": {
+										"type": "string",
+										"example": "Dupont",
+										"minLength": 2,
+										"maxLength": 30,
+										"pattern": "^[a-zA-ZÀ-ÿ\\s\\-']+$",
+										"description": "Nom du contact (lettres, espaces, tirets et apostrophes uniquement)"
+									},
+									"phone": {
+										"type": "string",
+										"example": "01 23 45 67 89",
+										"minLength": 10,
+										"maxLength": 20,
+										"pattern": "^[0-9+\\-\\s()]+$",
+										"description": "Numéro de téléphone (chiffres, espaces, +, -, parenthèses)"
+									}
+								},
+								"description": "Au moins un champ parmi firstname, lastname ou phone doit être renseigné"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Contact créé avec succès",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean", "example": true },
+										"message": { "type": "string", "example": "Contact créé avec succès" },
+										"data": {
+											"type": "object",
+											"properties": {
+												"contact": { "$ref": "#/components/schemas/Contact" }
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Données invalides - Veuillez renseigner au moins un champ parmi : prénom, nom ou téléphone"
+					},
+					"401": {
+						"description": "Token d'authentification manquant ou invalide"
+					}
+				}
+			},
+			"get": {
+				"tags": ["Contacts"],
+				"summary": "Récupérer la liste des contacts",
+				"security": [{ "bearerAuth": [] }],
+				"responses": {
+					"200": {
+						"description": "Liste des contacts récupérée avec succès",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean", "example": true },
+										"message": { "type": "string", "example": "Liste des contacts récupérée avec succès" },
+										"data": {
+											"type": "array",
+											"items": { "$ref": "#/components/schemas/Contact" }
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token d'authentification manquant ou invalide"
+					},
+					"404": {
+						"description": "Aucun contact trouvé pour cet utilisateur"
+					}
+				}
+			}
+		},
+		"/contacts/{id}": {
+			"patch": {
+				"tags": ["Contacts"],
+				"summary": "Mettre à jour un contact existant",
+				"security": [{ "bearerAuth": [] }],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "ID du contact à modifier",
+						"schema": {
+							"type": "string",
+							"example": "68cd1188c8b184"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"firstname": {
+										"type": "string",
+										"example": "Jean",
+										"minLength": 2,
+										"maxLength": 30,
+										"pattern": "^[a-zA-ZÀ-ÿ\\s\\-']+$"
+									},
+									"lastname": {
+										"type": "string",
+										"example": "Martin",
+										"minLength": 2,
+										"maxLength": 30,
+										"pattern": "^[a-zA-ZÀ-ÿ\\s\\-']+$"
+									},
+									"phone": {
+										"type": "string",
+										"example": "06 12 34 56 78",
+										"minLength": 10,
+										"maxLength": 20,
+										"pattern": "^[0-9+\\-\\s()]+$"
+									}
+								},
+								"description": "Au moins un champ doit être fourni pour la mise à jour"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Contact mis à jour avec succès",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean", "example": true },
+										"message": { "type": "string", "example": "Liste des contacts récupérée avec succès" },
+										"data": { "$ref": "#/components/schemas/Contact" }
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Données invalides"
+					},
+					"401": {
+						"description": "Token d'authentification manquant ou invalide"
+					},
+					"403": {
+						"description": "Vous n'avez pas les droits nécessaires pour effectuer cette action"
+					},
+					"404": {
+						"description": "Contact non trouvé"
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Contacts"],
+				"summary": "Supprimer un contact",
+				"security": [{ "bearerAuth": [] }],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "ID du contact à supprimer",
+						"schema": {
+							"type": "string",
+							"example": "68cd1188c8b184"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Contact supprimé avec succès",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean", "example": true },
+										"message": { "type": "string", "example": "Contact supprimé avec succès" },
+										"data": { "$ref": "#/components/schemas/Contact" }
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token d'authentification manquant ou invalide"
+					},
+					"403": {
+						"description": "Vous n'avez pas les droits nécessaires pour effectuer cette action"
+					},
+					"404": {
+						"description": "Contact non trouvé"
 					}
 				}
 			}
