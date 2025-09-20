@@ -1,7 +1,7 @@
 const contactService = require("../services/contactServices");
 
 const contactController = {
-	addContact: async (req, res, next) => {
+	createContact: async (req, res, next) => {
 		try {
 			contactService.validateContactData(req.body); // Validation (lance ValidationError si échec)
 
@@ -17,7 +17,7 @@ const contactController = {
 		}
 	},
 
-	retrieveContact: async (req, res, next) => {
+	getContact: async (req, res, next) => {
 		try {
 			const contactList = await contactService.readContact(req.user);
 
@@ -31,22 +31,42 @@ const contactController = {
 		}
 	},
 
-  modifyContact: async (req, res, next) => {
-    try {
-      contactService.validateContactData(req.body);
+	updateContact: async (req, res, next) => {
+		try {
+			contactService.validateContactData(req.body);
 
-      const updateContact = await contactService.updateContact(req.body, req.user, req.params);
+			const updateContact = await contactService.updateContact(
+				req.body,
+				req.user,
+				req.params
+			);
 
-      res.status(200).json({
+			res.status(200).json({
 				success: true,
 				message: "Liste des contacts récupérée avec succès",
 				data: updateContact,
 			});
-      
-    } catch (error) {
-      next(error);
-    }
-  }
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	deleteContact: async (req, res, next) => {
+		try {
+			const deleteContact = await contactService.deleteContact(
+				req.user,
+				req.params
+			);
+
+			res.status(200).json({
+				success: true,
+				message: "Contact supprimé avec succès",
+				data: deleteContact,
+			});
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 module.exports = contactController;

@@ -109,6 +109,28 @@ const contactService = {
 
 		return contact;
 	},
+
+	deleteContact: async (userData, paramsData) => {
+		const { id: paramsId } = paramsData; // id du contact à modifier (dans l’URL)
+		const { id: tokenId } = userData; // id de l’utilisateur connecté (JWT)
+
+		const contact = await Contact.findById(paramsId);
+
+		if (!contact) {
+			throw new NotFoundError("Contact non trouvé");
+		}
+
+		// Vérifier que le contact appartient bien à l'utilisateur connecté
+		if (contact.userId.toString() !== tokenId.toString()) {
+			throw new ForbiddenError(
+				"Vous n'avez pas les droits nécessaires pour effectuer cette action."
+			);
+		}
+
+		const deletedContact = await Contact.findByIdAndDelete(paramsId);
+
+		return deletedContact;
+	},
 };
 
 module.exports = contactService;
