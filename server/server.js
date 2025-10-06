@@ -13,7 +13,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTENT_URL
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 // Allow CORS from Frontend
 app.use(cors({
