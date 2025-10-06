@@ -13,11 +13,11 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const BACKEND_URL = process.env.BACKEND_URL
+const FRONTEND_URL = process.env.FRONTENT_URL
 
 // Allow CORS from Frontend
 app.use(cors({
-  origin: BACKEND_URL,
+  origin: FRONTEND_URL,
   credentials: true // si tu utilises des cookies ou sessions
 }));
 
