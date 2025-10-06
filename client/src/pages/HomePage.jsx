@@ -130,68 +130,68 @@ export default function HomePage() {
             ))}
           </ul>
         )}
-
-        {/* === Modal === */}
-        {isModalOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>
-                {editingContact ? "Modifier le contact" : "Ajouter un contact"}
-              </h3>
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label for="firstname">Prénom</label>
-                  <input
-                    type="text"
-                    name="firstname"
-                    placeholder="Prénom"
-                    value={form.firstname}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label for="lastname">Nom</label>
-                  <input
-                    type="text"
-                    name="lastname"
-                    placeholder="Nom"
-                    value={form.lastname}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label for="lastname">Numéro de téléphone</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Téléphone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="modal-buttons">
-                  <button type="submit" className="save-btn">
-                    Enregistrer
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="cancel-btn"
-                  >
-                    Annuler
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* === Modal === */}
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>
+              {editingContact ? "Modifier le contact" : "Ajouter un contact"}
+            </h3>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label for="firstname">Prénom</label>
+                <input
+                  type="text"
+                  name="firstname"
+                  placeholder="Prénom"
+                  value={form.firstname}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="lastname">Nom</label>
+                <input
+                  type="text"
+                  name="lastname"
+                  placeholder="Nom"
+                  value={form.lastname}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="lastname">Numéro de téléphone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Téléphone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="modal-buttons">
+                <button type="submit" className="save-btn">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="cancel-btn"
+                >
+                  Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
