@@ -89,107 +89,109 @@ export default function HomePage() {
   if (error) return <p className="error">{error}</p>;
 
   return (
-    <div className="home-container">
-      <div className="header">
-        <h2>📇 Liste des contacts</h2>
-        <button className="add-btn" onClick={() => openModal()}>
-          + Ajouter
-        </button>
-      </div>
-
-      {contacts.length === 0 ? (
-        <p>Aucun contact trouvé.</p>
-      ) : (
-        <ul className="contact-list">
-          {contacts.map((c) => (
-            <li key={c._id} className="contact-card">
-              <div className="contact-info">
-                <p>
-                  <strong>Prénom :</strong> {c.firstname || "—"}
-                </p>
-                <p>
-                  <strong>Nom :</strong> {c.lastname || "—"}
-                </p>
-                <p>
-                  <strong>Téléphone :</strong> {c.phone || "—"}
-                </p>
-              </div>
-              <div className="contact-actions">
-                <button onClick={() => openModal(c)} className="edit-btn">
-                  Modifier
-                </button>
-                <button
-                  onClick={() => handleDelete(c._id)}
-                  className="delete-btn"
-                >
-                  Supprimer
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* === Modal === */}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>
-              {editingContact ? "Modifier le contact" : "Ajouter un contact"}
-            </h3>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label for="firstname">Prénom</label>
-                <input
-                  type="text"
-                  name="firstname"
-                  placeholder="Prénom"
-                  value={form.firstname}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div>
-                <label for="lastname">Nom</label>
-                <input
-                  type="text"
-                  name="lastname"
-                  placeholder="Nom"
-                  value={form.lastname}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div>
-                <label for="lastname">Numéro de téléphone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Téléphone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="modal-buttons">
-                <button type="submit" className="save-btn">
-                  Enregistrer
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="cancel-btn"
-                >
-                  Annuler
-                </button>
-              </div>
-            </form>
-          </div>
+    <>
+      <div className="home-container">
+        <div className="header">
+          <h2>📇 Liste des contacts</h2>
+          <button className="add-btn" onClick={() => openModal()}>
+            + Ajouter
+          </button>
         </div>
-      )}
-    </div>
+
+        {contacts.length === 0 ? (
+          <p>Aucun contact trouvé.</p>
+        ) : (
+          <ul className="contact-list">
+            {contacts.map((c) => (
+              <li key={c._id} className="contact-card">
+                <div className="contact-info">
+                  <p>
+                    <strong>Prénom :</strong> {c.firstname || "—"}
+                  </p>
+                  <p>
+                    <strong>Nom :</strong> {c.lastname || "—"}
+                  </p>
+                  <p>
+                    <strong>Téléphone :</strong> {c.phone || "—"}
+                  </p>
+                </div>
+                <div className="contact-actions">
+                  <button onClick={() => openModal(c)} className="edit-btn">
+                    Modifier
+                  </button>
+                  <button
+                    onClick={() => handleDelete(c._id)}
+                    className="delete-btn"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* === Modal === */}
+        {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>
+                {editingContact ? "Modifier le contact" : "Ajouter un contact"}
+              </h3>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label for="firstname">Prénom</label>
+                  <input
+                    type="text"
+                    name="firstname"
+                    placeholder="Prénom"
+                    value={form.firstname}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="lastname">Nom</label>
+                  <input
+                    type="text"
+                    name="lastname"
+                    placeholder="Nom"
+                    value={form.lastname}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="lastname">Numéro de téléphone</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    placeholder="Téléphone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="modal-buttons">
+                  <button type="submit" className="save-btn">
+                    Enregistrer
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="cancel-btn"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
