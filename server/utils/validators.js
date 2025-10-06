@@ -70,7 +70,7 @@ const validators = {
 		const {
 			minLength = 2,
 			maxLength = 30,
-			type = "prénom",
+			type = "firstname",
 			required = "true",
 		} = options;
 		const errors = [];

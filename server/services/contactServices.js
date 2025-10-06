@@ -19,7 +19,7 @@ const contactService = {
 
 		if (firstname) {
 			const firstnameValidation = validators.validateName(firstname, {
-				type: "prénom",
+				type: "firstname",
 			});
 			if (!firstnameValidation.isValid) {
 				allErrors = allErrors.concat(firstnameValidation.errors);
@@ -28,7 +28,7 @@ const contactService = {
 
 		if (lastname) {
 			const lastnameValidation = validators.validateName(lastname, {
-				type: "nom",
+				type: "lastname",
 			});
 			if (!lastnameValidation.isValid) {
 				allErrors = allErrors.concat(lastnameValidation.errors);

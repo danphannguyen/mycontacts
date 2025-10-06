@@ -1,5 +1,4 @@
 const userService = require("../services/userServices");
-const { ValidationError, ConflictError, AppError } = require("../utils/errors");
 
 const userController = {
 	register: async (req, res, next) => {
