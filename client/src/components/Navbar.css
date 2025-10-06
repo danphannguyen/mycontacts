@@ -1,0 +1,29 @@
+.nav-wrapper {
+  background-color: #424549;
+  padding: 4px;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+
+  a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 6px 12px;
+  }
+
+  a:hover {
+    color: white;
+    background-color: #7289da;
+    border-radius: 4px;
+  }
+}
+
+

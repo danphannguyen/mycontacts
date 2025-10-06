@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require("express");
+const cors = require("cors")
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./docs/swagger.json");
 
@@ -8,8 +9,17 @@ const routes = require('./routes');
 
 const errorHandler = require('./middleware/errorHandler');
 
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+const BACKEND_URL = process.env.BACKEND_URL
+
+// Allow CORS from Frontend
+app.use(cors({
+  origin: BACKEND_URL,
+  credentials: true // si tu utilises des cookies ou sessions
+}));
 
 // Middleware
 app.use(express.json());
