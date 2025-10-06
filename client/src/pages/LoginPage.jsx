@@ -2,13 +2,13 @@ import "./LoginPage.css";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+import { login, register } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
 export default function AuthPage() {
   const navigate = useNavigate();
   const { loginUser } = useAuth();
-  const [isLogin, setIsLogin] = useState(true); // true = login, false = register
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,23 +28,22 @@ export default function AuthPage() {
   };
 
   // ===== Register =====
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Les mots de passe ne correspondent pas");
       return;
     }
 
-    const storedUsers = JSON.parse(localStorage.getItem("users") || "{}");
-    if (storedUsers[email]) {
-      alert("Nom d’utilisateur déjà utilisé");
-      return;
-    }
+    try {
+      await register(email, password);
+      navigate("/login");
 
-    storedUsers[email] = password;
-    localStorage.setItem("users", JSON.stringify(storedUsers));
-    alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-    setIsLogin(true);
+      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      setIsLogin(true);
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (
@@ -71,16 +70,16 @@ export default function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="button-cta" type="submit">
+          <button className="button button-cta" type="submit">
             Login
           </button>
-          <button
-            className="button-secondary"
+          <span
+            className="button button-secondary"
             type="button"
             onClick={() => setIsLogin(false)}
           >
             Register
-          </button>
+          </span>
         </form>
       ) : (
         <form onSubmit={handleRegister}>
@@ -94,28 +93,36 @@ export default function AuthPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <button className="button-cta" type="submit">
+          <div className="input-wrapper">
+            <label for="password">Mot de passe</label>
+            <input
+              name="password"
+              type="password"
+              placeholder="W4uLsBc4Ltvl6T"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="input-wrapper">
+            <label for="confirmPassword">Confirmer votre mot de passe</label>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+
+          <button className="button button-cta" type="submit">
             Register
           </button>
-          <button
-            className="button-secondary"
+          <span
+            className="button button-secondary"
             type="button"
             onClick={() => setIsLogin(true)}
           >
             Login
-          </button>
+          </span>
         </form>
       )}
     </div>

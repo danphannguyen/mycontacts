@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./utils/PrivateRoute";
-import { AuthProvider } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import "./App.css";
 
 // Components import
@@ -10,30 +10,28 @@ import { Navbar } from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-// import ContactPage from '../pages/ContactPage';
 
 export default function App() {
+  const { token } = useAuth();
+
   return (
     <BrowserRouter>
       <div className="body-wrapper">
-        <Navbar />
+        {token && <Navbar />}
 
         <main className="main-wrapper">
-          <AuthProvider>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route
-                path="/"
-                element={
-                  <PrivateRoute>
-                    <HomePage />
-                  </PrivateRoute>
-                }
-              />
-              {/* <Route path="/contact" element={<ContactPage />} /> */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </AuthProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </main>
       </div>
     </BrowserRouter>

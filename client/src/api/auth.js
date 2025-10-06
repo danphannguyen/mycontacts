@@ -1,3 +1,5 @@
+import { handleRequestErrors } from "../utils/HandleRequestErrors";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 export async function login(email, password) {
@@ -7,22 +9,15 @@ export async function login(email, password) {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || "Login failed");
-  }
-
-  return data; // { token, user, etc. }
+  return handleRequestErrors(res);
 }
 
-// export async function register(username, password) {
-//   const res = await fetch(`${API_URL}/register`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ username, password }),
-//   });
+export async function register(email, password) {
+  const res = await fetch(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-//   if (!res.ok) throw new Error("Registration failed");
-//   return res.json();
-// }
+  return handleRequestErrors(res);
+}
