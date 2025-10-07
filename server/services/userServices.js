@@ -37,7 +37,6 @@ const userService = {
 	createUser: async (userData) => {
 		const { email, password } = userData;
 
-		// Vérifier si l'utilisateur existe déjà
 		const existingUser = await User.findOne({
 			email: email.toLowerCase().trim(),
 		});

@@ -132,7 +132,6 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* === Modal === */}
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">

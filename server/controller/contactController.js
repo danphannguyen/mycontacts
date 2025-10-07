@@ -3,7 +3,7 @@ const contactService = require("../services/contactServices");
 const contactController = {
 	createContact: async (req, res, next) => {
 		try {
-			contactService.validateContactData(req.body); // Validation (lance ValidationError si échec)
+			contactService.validateContactData(req.body);
 
 			const contact = await contactService.createContact(req.body, req.user);
 

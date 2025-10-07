@@ -27,7 +27,6 @@ export default function AuthPage() {
     }
   };
 
-  // ===== Register =====
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {

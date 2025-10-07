@@ -3,9 +3,9 @@ const userService = require("../services/userServices");
 const userController = {
 	register: async (req, res, next) => {
 		try {
-			userService.validateUserData(req.body);   			// Validation (lance ValidationError si échec)
+			userService.validateUserData(req.body);
 
-			const user = await userService.createUser(req.body);    // Création (lance ConflictError si email existe)
+			const user = await userService.createUser(req.body);
 
 			res.status(201).json({
 				success: true,
@@ -19,6 +19,8 @@ const userController = {
 
   login: async (req, res, next) => {
     try {
+			userService.validateUserData(req.body);
+
       const user = await userService.authenticateUser(req.body);
 
       const token = await userService.generateJwtToken(user)

@@ -9,8 +9,6 @@ const routes = require('./routes');
 
 const errorHandler = require('./middleware/errorHandler');
 
-
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL
@@ -18,10 +16,10 @@ const FRONTEND_URL = process.env.FRONTEND_URL
 // Allow CORS from Frontend
 app.use(cors({
   origin: FRONTEND_URL,
-  credentials: true // si tu utilises des cookies ou sessions
+  credentials: true
 }));
 
-// Middleware
+// Allow express to accept JSON
 app.use(express.json());
 
 // Routes
